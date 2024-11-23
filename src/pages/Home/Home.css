@@ -1,0 +1,12 @@
+.TabsContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.Tabs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
