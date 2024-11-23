@@ -1,34 +1,42 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { allBiddingInfo, addParticipantAnswer } from '../../redux/slice/biddingInfo.js';
+import { allBiddingInfo, addParticipantAnswer, selectBiddingInfosArray } from '../../redux/slice/biddingInfo.js';
 import { Box, TextField, Button, Typography, CircularProgress } from '@mui/material';
 
 const BiddingInfoConnection = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const criteria = useSelector((state) => state.biddingInfo.items.criteria || []); // Обеспечиваем, что это массив
+  
+  const criteria = useSelector(selectBiddingInfosArray);
   const [answers, setAnswers] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
+    console.log(criteria);
+    
     const fetchData = async () => {
       try {
         const result = await dispatch(allBiddingInfo(id)).unwrap();
-        if (result.message === "Информация не найдена" || !result.criteria || result.criteria.length === 0) {
-          navigate(`/biddings/${id}`); // Перенаправление, если критерии отсутствуют
+        console.log('Загруженные данные:', result); // Логирование результата загрузки
+
+        if (result.message === "Информация не найдена" || !result.data || result.data.length === 0) {
+          setError(true); // Устанавливаем состояние ошибки
+        } else {
+          setError(false); // Если данные корректные, ошибка сбрасывается
         }
       } catch (error) {
         console.error("Ошибка при загрузке информации:", error.message);
-        navigate(`/biddings/${id}`);
+        setError(true);
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchData();
-  }, [id, dispatch, navigate]);
+  }, [id, dispatch]);
 
   const handleAnswerChange = (title, value) => {
     setAnswers({ ...answers, [title]: value });
@@ -49,6 +57,14 @@ const BiddingInfoConnection = () => {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
         <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Box sx={{ padding: 4 }}>
+        <Typography variant="h6">Ошибка при загрузке данных или критерии отсутствуют.</Typography>
       </Box>
     );
   }

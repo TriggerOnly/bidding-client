@@ -1,6 +1,7 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
 import axios from "../../axios";
 import { allParticipants } from "./biddingUserSlice";
+import { useEffect } from "react";
 
 export const fetchBiddingInfo = createAsyncThunk('biddings/fetchBiddingInfo', async ({id, criteria}) => {
   const { data } = await axios.post(`/createBiddingCriteria/${id}`, criteria);
@@ -11,6 +12,16 @@ export const allBiddingInfo = createAsyncThunk('biddings/fetchAllBiddingInfo', a
   const { data } = await axios.get(`/allBiddingCriteria/${biddingId}`);
   return { biddingId, data: Array.isArray(data) ? data : [] };
 });
+
+export const selectBiddingInfoArray = createSelector(
+  (state) => state.biddingInfo.items.criteria, 
+  (criteria) => {
+    const biddingInfo = Object.values(criteria)[0]; 
+    return Array.isArray(biddingInfo) ? biddingInfo : [];
+  }
+);
+
+export const selectBiddingInfosArray = (state) => state.biddingInfo.items.criteria || [];
 
 export const addParticipantAnswer = createAsyncThunk(
   'biddingInfo/addParticipantAnswer',
@@ -61,12 +72,9 @@ export const allParticipantAnswers = createAsyncThunk('biddingInfo/allParticipan
         })
         .addCase(allBiddingInfo.fulfilled, (state, action) => {
           const { biddingId, data } = action.payload;
-          if (!state.items.criteria) {
-            state.items.criteria = {}; 
-          }
-          state.items.criteria[biddingId] = data; 
+          state.items.criteria = data || [];
           state.status = 'loaded';
-        })        
+        })                    
         .addCase(allBiddingInfo.rejected, (state, action) => {
           state.items.criteria = [];
           state.status = 'error';

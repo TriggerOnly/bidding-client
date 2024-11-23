@@ -15,7 +15,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchBidding } from "../../redux/slice/biddingSlice";
-import { allBiddingInfo, allParticipantAnswers } from "../../redux/slice/biddingInfo";
+import { allBiddingInfo, allParticipantAnswers, selectBiddingInfoArray } from "../../redux/slice/biddingInfo";
 import { allParticipants, selectParticipantsArray } from "../../redux/slice/biddingUserSlice";
 import Timer from "../Timer/Timer";
 
@@ -28,7 +28,7 @@ export const FullBidding = () => {
   const navigate = useNavigate();
 
   const bidding = useSelector((state) => state.bidding.bidding || {});
-  const biddingInfo = useSelector((state) => state.biddingInfo.items || {});
+  const biddingInfo = useSelector((state) => state.biddingInfo.items);
   const participantAnswers = useSelector((state) => state.biddingInfo.participantAnswers || []);
   const participants = useSelector(selectParticipantsArray);
   const token = localStorage.getItem("token");
@@ -41,6 +41,8 @@ export const FullBidding = () => {
   }, [token, navigate]);
 
   useEffect(() => {
+    console.log("biddingInfo", biddingInfo);
+    
     const fetchData = async () => {
       await Promise.all([
         dispatch(fetchBidding(id)),
@@ -137,16 +139,15 @@ export const FullBidding = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {biddingInfo.criteria && biddingInfo.criteria.length > 0 ? (
+            {Array.isArray(biddingInfo.criteria) && biddingInfo.criteria.length > 0 ? (
               biddingInfo.criteria.map((criterion) => (
                 <TableRow key={criterion._id}>
                   <TableCell>{criterion.title}</TableCell>
                   {participants.map((participant) => {
-                    const answer = participantAnswers.find(
-                      (ans) =>
-                        ans.criteriaId === criterion._id &&
-                        ans.participantId === participant._id
-                    );
+                    const answer = Array.isArray(participantAnswers) ? participantAnswers.find(
+                      (ans) => ans.criteriaId === criterion._id && ans.participantId === participant._id
+                    ) : null;
+                  
                     return (
                       <TableCell key={participant._id + criterion._id} align="center">
                         {answer ? answer.answer : "—"}
@@ -191,6 +192,7 @@ export const FullBidding = () => {
           </TableBody>
         </Table>
       </TableContainer>
+
 
       <Box sx={{ marginTop: 2 }}>
         <Button variant="outlined" color="error" onClick={handleClose} sx={{ marginRight: 1 }}>

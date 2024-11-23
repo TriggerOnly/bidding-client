@@ -13,6 +13,11 @@ const CreateCriteria = () => {
 
   const [newCriteria, setNewCriteria] = useState('');
   const { items, status } = useSelector((state) => state.biddingInfo);
+  const biddingInfo = useSelector((state) => state.biddingInfo.items);
+
+  useEffect(() => {
+    console.log("items:", items); // Логируем все данные, чтобы проверить их структуру
+  }, [items]);
 
   useEffect(() => {
     if (id) {
@@ -26,6 +31,8 @@ const CreateCriteria = () => {
       const criteria = { title: newCriteria };
       await dispatch(fetchBiddingInfo({ id, criteria })).unwrap();
       setNewCriteria(''); 
+      console.log(biddingInfo);
+      
       dispatch(allBiddingInfo(id))
     } catch (error) {
       console.warn('Ошибка при добавлении критерия:', error);
@@ -54,7 +61,7 @@ const CreateCriteria = () => {
       <div style={{ marginTop: 20 }}>
         <h3>Текущие критерии:</h3>
         <ul>
-          {(items?.criteria?.[id] || []).map((criterion, index) => (
+          {(items?.criteria || []).map((criterion, index) => (
             <li key={index}>{criterion.title}</li>
           ))}
         </ul>
