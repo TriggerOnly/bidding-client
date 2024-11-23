@@ -20,12 +20,12 @@ const BiddingInfoConnection = () => {
     const fetchData = async () => {
       try {
         const result = await dispatch(allBiddingInfo(id)).unwrap();
-        console.log('Загруженные данные:', result); // Логирование результата загрузки
+        console.log('Загруженные данные:', result);
 
         if (result.message === "Информация не найдена" || !result.data || result.data.length === 0) {
-          setError(true); // Устанавливаем состояние ошибки
+          setError(true); 
         } else {
-          setError(false); // Если данные корректные, ошибка сбрасывается
+          setError(false);
         }
       } catch (error) {
         console.error("Ошибка при загрузке информации:", error.message);
@@ -41,6 +41,10 @@ const BiddingInfoConnection = () => {
   const handleAnswerChange = (title, value) => {
     setAnswers({ ...answers, [title]: value });
   };
+
+  const Next = () => {
+    navigate(`/biddings/${id}`)
+  }
 
   const handleSubmit = () => {
     const answersArray = Object.entries(answers).map(([title, answer]) => ({
@@ -64,7 +68,8 @@ const BiddingInfoConnection = () => {
   if (error) {
     return (
       <Box sx={{ padding: 4 }}>
-        <Typography variant="h6">Ошибка при загрузке данных или критерии отсутствуют.</Typography>
+        <Typography variant="h6">критерии отсутствуют.</Typography>
+        <Button onClick={Next}>Далее</Button>
       </Box>
     );
   }
