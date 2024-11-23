@@ -2,8 +2,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "../../axios";
 import { allParticipants } from "./biddingUserSlice";
 
-export const fetchBiddingInfo = createAsyncThunk('biddings/fetchBiddingInfo', async (biddingId) => {
-  const { data } = await axios.post(`/createBiddingCriteria/${biddingId}`);
+export const fetchBiddingInfo = createAsyncThunk('biddings/fetchBiddingInfo', async ({id, criteria}) => {
+  const { data } = await axios.post(`/createBiddingCriteria/${id}`, criteria);
   return data;  
 });
 
@@ -36,7 +36,7 @@ export const allParticipantAnswers = createAsyncThunk('biddingInfo/allParticipan
       text: '', 
     },
     participantAnswers: [],
-    status: 'loading',
+    status: 'idle',
   };
   
   const biddingInfoSlice = createSlice({

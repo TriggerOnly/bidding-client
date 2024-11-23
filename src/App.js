@@ -17,6 +17,7 @@ import {FullBidding} from './components/FullBidding/FullBidding.jsx';
 import BiddingInfoConnection from './components/modal/BiddingInfoConnection.jsx';
 import EndBidding from './components/EndBidding/EndBidding.jsx';
 import { DetailsModal } from './components/modal/DetailsModel.jsx';
+import CreateCriteria from './components/modal/CreateCriteria.jsx';
 
 function App() {
   const dispatch = useDispatch()
@@ -42,6 +43,7 @@ function App() {
         <Route path="/biddings/info/:id" element={<BiddingInfoConnection/>} />
         <Route path="/biddings/end/:id" element={<EndBidding/>} />
         <Route path="/scheduled-trading/:id" element={<DetailsModal/>} />
+        <Route path="/create-criteria/:id" element={<CreateCriteria/>} />
       </Routes>
     </div>
   );

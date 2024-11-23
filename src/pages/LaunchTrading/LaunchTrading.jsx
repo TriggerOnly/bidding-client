@@ -47,14 +47,14 @@ const LaunchTrading = () => {
   const onSubmit = async () => {
     try {
       setIsLoading(true);
-    
+  
       const startDateTime = startDate
         .hour(startTime.hour())
         .minute(startTime.minute())
         .second(0);
-    
+  
       const formattedDateTime = startDateTime.format('DD.MM.YYYY HH:mm:ss');
-    
+  
       const fields = {
         title,
         text,
@@ -63,15 +63,16 @@ const LaunchTrading = () => {
         code: connectionСode,
         time: formattedDateTime,
       };
-    
+  
       const response = await axios.post('/createBidding', fields);
-      dayjs.extend(isSameOrAfter);
-      const redirectPath = dayjs().isSameOrAfter(startDateTime)
-        ? '/current-trading' 
-        : '/scheduled-trading'; 
-      console.log(redirectPath);
-        
-      navigate(redirectPath);
+  
+      const biddingId = response.data?._id; // Получаем ID торгов
+  
+      console.log(response.data);
+      console.log("biddingId", biddingId);
+      
+
+      navigate(`/create-criteria/${biddingId}`); // Переход к созданию критериев
     } catch (error) {
       console.warn("Ошибка:", error);
       alert('Не удалось создать торги');
@@ -157,6 +158,6 @@ const LaunchTrading = () => {
       </div>
     </Paper>
   );
-};
+}
 
-export default LaunchTrading;
+export default LaunchTrading

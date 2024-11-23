@@ -1,4 +1,4 @@
-  import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+  import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
   import axios from "../../axios";
 
   export const connectionOrCreateParticipant = createAsyncThunk(
@@ -16,11 +16,19 @@
       return { _id, users: data.users || [] };
     }
   );
+
+  export const selectParticipantsArray = createSelector(
+    (state) => state.biddingUser.users,
+    (users) => {
+      const participants = Object.values(users)[0]; 
+      return Array.isArray(participants) ? participants : [];
+    }
+  );
+
   const initialState = {
     users: {},
     participants: {},
     status: 'loading',
-    usersStatus: 'loading',
   };
 
   const biddingUserSlice = createSlice({

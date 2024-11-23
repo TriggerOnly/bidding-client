@@ -15,6 +15,8 @@ const EndBidding = () => {
   const biddingInfo = useSelector((state) => state.biddingInfo.items);
   const participantAnswers = useSelector((state) => state.biddingInfo.participantAnswers);
 
+  const participantsArray = Array.isArray(participants) ? participants : Object.values(participants)[0] || [];
+
   const [reportData, setReportData] = useState(null);
 
   useEffect(() => {
@@ -32,7 +34,7 @@ const EndBidding = () => {
       const data = {
         title: bidding.title,
         date: bidding.time,
-        participants: participants.map((participant) => ({
+        participants: participantsArray.map((participant) => ({
           name: participant.nameOrganization,
           sum: participant.coast,
           criteria: criteria.map((criterion) => {
@@ -112,7 +114,7 @@ const EndBidding = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {participants.map((participant) => (
+            {participantsArray.map((participant) => (
               <TableRow key={participant._id}>
                 <TableCell>{participant.nameOrganization}</TableCell>
                 <TableCell>{participant.coast} руб.</TableCell>

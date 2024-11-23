@@ -5,24 +5,19 @@ import { allBiddingInfo, addParticipantAnswer } from '../../redux/slice/biddingI
 import { Box, TextField, Button, Typography, CircularProgress } from '@mui/material';
 
 const BiddingInfoConnection = () => {
-  const { id } = useParams(); 
+  const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const criteria = useSelector((state) => state.biddingInfo.items.criteria);
-  const status = useSelector((state) => state.biddingInfo.status);
+  const criteria = useSelector((state) => state.biddingInfo.items.criteria || []); // Обеспечиваем, что это массив
   const [answers, setAnswers] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => { 
-    dispatch(allBiddingInfo(id));
-  }, [id, dispatch]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const result = await dispatch(allBiddingInfo(id)).unwrap();
-        if (result.message === "Информация не найдена") {
-          navigate(`/biddings/${id}`);
+        if (result.message === "Информация не найдена" || !result.criteria || result.criteria.length === 0) {
+          navigate(`/biddings/${id}`); // Перенаправление, если критерии отсутствуют
         }
       } catch (error) {
         console.error("Ошибка при загрузке информации:", error.message);
@@ -31,9 +26,9 @@ const BiddingInfoConnection = () => {
         setIsLoading(false);
       }
     };
-  
+
     fetchData();
-  }, [id, dispatch, navigate]);  
+  }, [id, dispatch, navigate]);
 
   const handleAnswerChange = (title, value) => {
     setAnswers({ ...answers, [title]: value });
@@ -44,11 +39,10 @@ const BiddingInfoConnection = () => {
       title,
       answer
     }));
-    console.log("id :", id);
     
     dispatch(addParticipantAnswer({ _id: id, answers: answersArray }));
     alert('Ответы успешно отправлены');
-    navigate(`biddings/${id}`);
+    navigate(`/biddings/${id}`);
   };
 
   if (isLoading) {
@@ -62,7 +56,7 @@ const BiddingInfoConnection = () => {
   return (
     <Box sx={{ padding: 4 }}>
       <Typography variant="h4" gutterBottom>Заполнение критериев торгов</Typography>
-      {criteria && criteria.length > 0 ? (
+      {criteria.length > 0 ? (
         criteria.map((crit) => (
           <Box key={crit._id} sx={{ marginBottom: 2 }}>
             <Typography variant="h6">{crit.title}</Typography>
@@ -78,11 +72,16 @@ const BiddingInfoConnection = () => {
       ) : (
         <Typography>Критерии отсутствуют.</Typography>
       )}
-      <Button variant="contained" color="primary" onClick={handleSubmit} disabled={!criteria || criteria.length === 0}>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleSubmit}
+        disabled={criteria.length === 0}
+      >
         Отправить
       </Button>
     </Box>
-  );  
+  );
 };
 
 export default BiddingInfoConnection;
