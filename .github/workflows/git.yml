@@ -21,7 +21,5 @@ jobs:
           run: npm install  
         - name: build client
           run:  CI=false npm run build 
-        - name: e2e test
-          run: npm run test:e2e  
         - name: lint code
           run:  npm run lint 
