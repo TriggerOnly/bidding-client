@@ -9,7 +9,7 @@ jobs:
   init:
     runs-on: ubuntu-latest
     strategy: 
-        matrix: 
+        matrix:  
             node-varsion: [ 20.x]
     steps:
         - uses: actions/checkout@v3
