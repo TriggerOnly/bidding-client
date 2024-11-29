@@ -17,8 +17,6 @@ jobs:
           run: npm install  
         - name: build client
           run:  CI=false npm run build 
-        - name: build storybook
-          run: npm run build:storybook
         - name: unit test
           run:  npm run test:unit
         - name: e2e test
