@@ -32,7 +32,6 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "lint": "eslint .",
     "test": "react-scripts test --testMatch='**/src/**/*.{js,jsx,ts,tsx}' --watchAll=false"
   },
   "eslintConfig": {
