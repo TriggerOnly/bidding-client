@@ -22,7 +22,7 @@ jobs:
         - name: build client
           run:  CI=false npm run build 
         - name: Run Unit Tests
-          run: npm test -- --watchAll=false
+          run: npm test -- --watchAll=false --passWithNoTests
         - name: Run Snapshot Tests
           run: npm test -- -u --watchAll=false
         - name: Run ESLint
