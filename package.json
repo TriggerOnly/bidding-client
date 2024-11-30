@@ -32,7 +32,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "NODE_OPTIONS=--experimental-vm-modules react-scripts test --watchAll=false"
+    "test": "react-scripts test --watchAll=false"
   },
   "eslintConfig": {
     "extends": [
