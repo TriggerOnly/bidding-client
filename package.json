@@ -32,7 +32,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --watchAll=false"
+    "test": "react-scripts test --testMatch='**/src/**/*.{js,jsx,ts,tsx}' --watchAll=false"
   },
   "eslintConfig": {
     "extends": [
@@ -57,6 +57,9 @@
     "@babel/preset-env": "^7.26.0",
     "@babel/preset-react": "^7.25.9",
     "babel-jest": "^29.7.0",
+    "eslint": "^8.57.1",
+    "eslint-plugin-react": "^7.37.2",
+    "eslint-plugin-react-hooks": "^5.0.0",
     "mocha": "^10.8.2"
   }
 }
