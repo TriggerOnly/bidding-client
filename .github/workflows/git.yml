@@ -23,7 +23,5 @@
           run: CI=false npm run build
         - name: Run Unit Tests
           run: npm test -- --watchAll=false --passWithNoTests
-        - name: Run Snapshot Tests
-          run: npm test -- -u --watchAll=false
         - name: Run ESLint
           run: npm run lint

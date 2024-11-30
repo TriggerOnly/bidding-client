@@ -7,10 +7,6 @@ module.exports = {
     moduleNameMapper: {
       "\\.(css|scss|sass)$": "identity-obj-proxy"
     },
-    extensionsToTreatAsEsm: [".jsx", ".js"],
-    testMatch: [
-        "/home/runner/work/bidding-client/bidding-client/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
-        "/home/runner/work/bidding-client/bidding-client/src/**/*.{spec,test}.{js,jsx,ts,tsx}"
-      ]
+    extensionsToTreatAsEsm: [".jsx", ".js"]
   };
   
