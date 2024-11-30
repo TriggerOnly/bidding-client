@@ -4,7 +4,9 @@ module.exports = {
       "^.+\\.(js|jsx|ts|tsx)$": "babel-jest"
     },
     transformIgnorePatterns: [
-      "/node_modules/(?!axios)/"
+        "/node_modules/",
+        "/src/pages/TenderPlatform/",
+        "/src/pages/ContestRequirements/",
     ],
     moduleNameMapper: {
       "\\.(css|scss|sass)$": "identity-obj-proxy"
